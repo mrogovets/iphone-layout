@@ -30,16 +30,21 @@ document.addEventListener("DOMContentLoaded", () => {
         memoryROM: 128,
       },
     ];
+
+    const deactive = () => {
+      cardDetailChangeElems.forEach((btn) => btn.classList.remove("active"));
+    };
+
     cardDetailChangeElems.forEach((btn, i) => {
       btn.addEventListener("click", () => {
         if (!btn.classList.contains("active")) {
+          deactive();
           btn.classList.add("active");
-
           cardDetailsTitleElem.textContent = data[i].name;
           cardImageItemElem.src = data[i].img;
           cardImageItemElem.alt = data[i].name;
           cardDetailsPriceElem.textContent = data[i].price + "₽";
-          descriptionMemory.textContent = ``;
+          descriptionMemory.textContent = `Встроенная память (ROM) ${data[i].memoryROM} ГБ`;
         }
       });
     });
