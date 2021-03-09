@@ -33,6 +33,13 @@ document.addEventListener("DOMContentLoaded", () => {
     cardDetailChangeElems.forEach((btn, i) => {
       btn.addEventListener("click", () => {
         if (!btn.classList.contains("active")) {
+          btn.classList.add("active");
+
+          cardDetailsTitleElem.textContent = data[i].name;
+          cardImageItemElem.src = data[i].img;
+          cardImageItemElem.alt = data[i].name;
+          cardDetailsPriceElem.textContent = data[i].price + "₽";
+          descriptionMemory.textContent = ``;
         }
       });
     });
