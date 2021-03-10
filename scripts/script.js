@@ -98,6 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // почему при объявлении closeAllDrops = (button, dropDown) => ... указываем два параметра, при вызове этой функции параметры вообще не указываем?
+
   const modal = () => {
     const cardDetailsButtonBuy = document.querySelector(
       ".card-details__button_buy"
