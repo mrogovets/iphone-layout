@@ -98,22 +98,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // почему при объявлении closeAllDrops = (button, dropDown) => ... указываем два параметра, при вызове этой функции параметры вообще не указываем?
-
   const modal = () => {
     const cardDetailsButtonBuy = document.querySelector(
       ".card-details__button_buy"
     );
+    const cardDetailsButtonDelivery = document.querySelector(
+      ".card-details__button_delivery"
+    );
     const modal = document.querySelector(".modal");
-    cardDetailsButtonBuy.addEventListener("click", () => {
+    const cardDetailsTitle = document.querySelector(".card-details__title");
+    const modalTitle = modal.querySelector(".modal__title");
+    const modalSubtitle = modal.querySelector(".modal__subtitle");
+    const modalTitleSubmit = modal.querySelector(".modal__title-submit");
+
+    const openModal = () => {
       modal.classList.add("open");
-    });
-    modal.addEventListener("click", (event) => {
-      const target = event.target;
-      if (target.classList.contains("modal__close")) {
+      document.addEventListener("keydown", escapeHandler);
+      modalTitle.textContent = cardDetailsTitle.textContent;
+      modalTitleSubmit.value = cardDetailsTitle.textContent;
+    };
+
+    const closeModal = () => {
+      modal.classList.remove("open");
+      document.removeEventListener("keydown", escapeHandler);
+    };
+
+    const escapeHandler = (event) => {
+      if (event.code === "Escape") {
         modal.classList.remove("open");
       }
+    };
+
+    modal.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target.classList.contains("modal__close") || target === modal) {
+        closeModal();
+      }
     });
+    cardDetailsButtonBuy.addEventListener("click", openModal);
+    cardDetailsButtonDelivery.addEventListener("click", openModal);
   };
 
   tabs();

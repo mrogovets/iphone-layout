@@ -134,10 +134,16 @@
               >
               <div class="card-details__footer">
                 <p class="card-details__price">99990₽</p>
-                <button class="button button_buy card-details__button_buy">
+                <button
+                  class="button button_buy card-details__button_buy"
+                  data-button-buy="Оплата"
+                >
                   Купить
                 </button>
-                <button class="button card-details__button_delivery">
+                <button
+                  class="button card-details__button_delivery"
+                  data-button-buy="Доставка и оплата"
+                >
                   Купить с доставкой
                 </button>
               </div>
@@ -541,6 +547,13 @@
         <button class="modal__close">✘</button>
         <h2 class="modal__subtitle">Доставка и оплата</h2>
         <form action="">
+          <input
+            type="text"
+            class="modal__title-submit visually-hidden"
+            name="name-good"
+            value="Смартфон Apple iPhone 12 Pro 128GB Graphite"
+            disabled
+          />
           <h3 class="modal__title">
             Смартфон Apple iPhone 12 Pro 128GB Graphite
           </h3>
