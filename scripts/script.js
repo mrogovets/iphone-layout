@@ -18,6 +18,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  //----------- fetch() ---------------
+  const getData_with_fetch = (url, callback) => {
+    fetch(url)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(response.statusText);
+      })
+      .then(callback)
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  //--------------------------
+
   const tabs = () => {
     const cardDetailChangeElems = document.querySelectorAll(
       ".card-detail__change"
@@ -158,10 +174,36 @@ document.addEventListener("DOMContentLoaded", () => {
     cardDetailsButtonDelivery.addEventListener("click", openModal);
   };
 
-  renderCrossSell = () => {
-    getData("cross-sell-dbase/dbase.json", (data) => {
-      console.log(data);
-    });
+  const renderCrossSell = () => {
+    const data = [];
+    const crossSellList = document.querySelector(".cross-sell__list");
+
+    const createCrossSellItem = (good) => {
+      const liItem = document.createElement("li");
+      liItem.innerHTML = `
+        <article class="cross-sell__item">
+                <img
+                  class="cross-sell__image"
+                  src=${good.photo}
+                  alt=${good.name}
+                />
+                <h3 class="cross-sell__title">
+                  ${good.name}
+                </h3>
+                <p class="cross-sell__price">${good.price}₽</p>
+                <button type="button" class="button button_buy cross-sell__button">Купить</button>
+              </article>
+        `;
+      return liItem;
+    };
+
+    const createCrossSellList = (goods) => {
+      goods.forEach((item) => {
+        crossSellList.append(createCrossSellItem(item));
+      });
+    };
+
+    getData("cross-sell-dbase/dbase.json", createCrossSellList);
   };
 
   tabs();
