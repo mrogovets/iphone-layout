@@ -1,6 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
+  const getData = (url, callback) => {
+    const request = new XMLHttpRequest();
+    request.open("GET", url);
+    request.send();
+
+    request.addEventListener("readystatechange", () => {
+      if (request.readyState !== 4) return;
+      if (request.status === 200) {
+        const response = JSON.parse(request.response);
+        callback(response);
+      } else {
+        console.log(new Error("Our Error: " + request.status));
+      }
+      console.log(request);
+    });
+  };
+
   const tabs = () => {
     const cardDetailChangeElems = document.querySelectorAll(
       ".card-detail__change"
@@ -111,11 +128,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const modalSubtitle = modal.querySelector(".modal__subtitle");
     const modalTitleSubmit = modal.querySelector(".modal__title-submit");
 
-    const openModal = () => {
+    const openModal = (event) => {
+      const target = event.target;
       modal.classList.add("open");
       document.addEventListener("keydown", escapeHandler);
       modalTitle.textContent = cardDetailsTitle.textContent;
       modalTitleSubmit.value = cardDetailsTitle.textContent;
+      modalSubtitle.textContent = target.dataset.buttonBuy;
     };
 
     const closeModal = () => {
@@ -125,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const escapeHandler = (event) => {
       if (event.code === "Escape") {
-        modal.classList.remove("open");
+        closeModal();
       }
     };
 
@@ -139,7 +158,14 @@ document.addEventListener("DOMContentLoaded", () => {
     cardDetailsButtonDelivery.addEventListener("click", openModal);
   };
 
+  renderCrossSell = () => {
+    getData("cross-sell-dbase/dbase.json", (data) => {
+      console.log(data);
+    });
+  };
+
   tabs();
   accordion();
   modal();
+  renderCrossSell();
 });
