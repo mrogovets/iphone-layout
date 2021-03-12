@@ -175,33 +175,56 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const renderCrossSell = () => {
-    const data = [];
     const crossSellList = document.querySelector(".cross-sell__list");
+    const crossSellAdd = document.querySelector(".cross-sell__add");
+    const allGoods = [];
 
-    const createCrossSellItem = (good) => {
+    const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+
+    const createCrossSellItem = ({ photo, name, price }) => {
       const liItem = document.createElement("li");
       liItem.innerHTML = `
         <article class="cross-sell__item">
                 <img
                   class="cross-sell__image"
-                  src=${good.photo}
-                  alt=${good.name}
+                  src=${photo}
+                  alt=${name}
                 />
                 <h3 class="cross-sell__title">
-                  ${good.name}
+                  ${name}
                 </h3>
-                <p class="cross-sell__price">${good.price}₽</p>
+                <p class="cross-sell__price">${price}₽</p>
                 <button type="button" class="button button_buy cross-sell__button">Купить</button>
               </article>
         `;
       return liItem;
     };
 
-    const createCrossSellList = (goods) => {
-      goods.forEach((item) => {
+    const render = (arr) => {
+      arr.forEach((item) => {
         crossSellList.append(createCrossSellItem(item));
       });
     };
+
+    const wrapper = (fn, count) => {
+      let counter = 0;
+      return (...args) => {
+        if (counter === count) return;
+        counter++;
+        return fn(...args);
+      };
+    };
+
+    const wrapRender = wrapper(render, 2);
+
+    const createCrossSellList = (goods = []) => {
+      allGoods.push(...shuffle(goods));
+      const fourItems = allGoods.splice(0, 4);
+      wrapRender(fourItems);
+    };
+    crossSellAdd.addEventListener("click", () => {
+      wrapRender(allGoods);
+    });
 
     getData("cross-sell-dbase/dbase.json", createCrossSellList);
   };
